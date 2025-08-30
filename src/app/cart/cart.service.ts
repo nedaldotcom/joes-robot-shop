@@ -1,29 +1,28 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-
-import { IProduct } from '../catalog/product.model';
+import {Injectable} from '@angular/core';
+import {IProduct} from "../catalog/product.model";
+import {HttpClient} from "@angular/common/http";
+import {Observable, BehaviorSubject} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CartService {
-  private cart: BehaviorSubject<IProduct[]> = new BehaviorSubject<IProduct[]>([]);
+  cart: BehaviorSubject<IProduct[]> = new BehaviorSubject<IProduct[]>([]);
 
   constructor(private http: HttpClient) {
-    this.http.get<IProduct[]>('/api/cart').subscribe({
+    this.http.get<IProduct[]>('/api/Catalog/GetCart').subscribe({
       next: (cart) => this.cart.next(cart),
     });
   }
 
   getCart(): Observable<IProduct[]> {
-      return this.cart.asObservable();
+    return this.cart.asObservable();
   }
 
   add(product: IProduct) {
     const newCart = [...this.cart.getValue(), product];
     this.cart.next(newCart);
-    this.http.post('/api/cart', newCart).subscribe(() => {
+    this.http.post('/api/Catalog/AddToCart', newCart).subscribe(() => {
       console.log('added ' + product.name + ' to cart!');
     });
   }

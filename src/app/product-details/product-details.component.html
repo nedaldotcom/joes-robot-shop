@@ -1,0 +1,24 @@
+<!--ngFor is a directive that repeats the element it is applied to.-->
+<div class="product">
+  <div class="product-details">
+    <img [src]="getImageUrl(product)" [alt]="product.name"/>
+    <!--[] -> this is attribute. {{}} -> this is interpolation-->
+    <div class="product-info">
+      <div class="name">{{ product.name }}</div>
+      <div class="description">{{ product.description }}</div>
+      <div class="category">Part Type: {{ product.category }}</div>
+    </div>
+  </div>
+  <div class="price">
+    <div
+      [ngStyle]="{'color': product.discount > 0 ? 'green' : ''}"
+      [ngClass]="getDiscountedProducts(product)">
+      <!--class binding: if the condition is true then the class is applied-->
+      {{ product.price | currency:'USD' }} <!--pipe:   | -->
+    </div>
+    <div *ngIf="product.discount > 0" class="discount">
+      {{ (product.price * (1 - product.discount)) | currency:'USD' }}
+    </div>
+    <button class="cta" (click)="buyButtonClicked(product)">Buy</button>
+  </div>
+</div>
